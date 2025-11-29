@@ -29,11 +29,16 @@ function setRegCount(n){localStorage.setItem('registrationsCount',String(n))}
 const regEl=document.querySelector('.registered-count');
 function initRegCount(){if(regEl){const n=getRegCount();regEl.dataset.target=String(n);animateCounter(regEl,n,800)}}
 initRegCount();
+function resetRegCount(){setRegCount(0);if(regEl){regEl.dataset.target='0';animateCounter(regEl,0,800)}}
+try{const qp=new URLSearchParams(location.search);if(qp.get('resetCount')==='1'){resetRegCount()}}catch(_){}
 const preorderForm=document.querySelector('.preorder-form');
 if(preorderForm){
   const nameInput=preorderForm.querySelector('input[name="name"]');
   const emailInput=preorderForm.querySelector('input[name="email"]');
   const phoneInput=preorderForm.querySelector('input[name="phone"]');
+  const submitBtn=preorderForm.querySelector('button[type="submit"]');
+  const statusEl=preorderForm.querySelector('.form-status');
+  function setStatus(msg,type){if(statusEl){statusEl.textContent=msg||'';statusEl.className='form-status'+(type?' '+type:'')}}
   function setHint(input,msg,ok){const wrap=input.parentElement;const hint=wrap.querySelector('.field-hint');if(hint)hint.textContent=msg||'';wrap.classList.toggle('is-valid',!!ok);wrap.classList.toggle('is-invalid',ok===false)}
   function validateName(v){const s=v.trim();if(s.length<2)return {ok:false,msg:'أدخل اسمًا صحيحًا'};return {ok:true,msg:'ممتاز'}}
   function validateEmail(v){const ok=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);return {ok, msg: ok?'صحيح':'أدخل بريدًا صحيحًا'} }
@@ -72,19 +77,29 @@ if(preorderForm){
       phoneInput.value='';
     }
     if(endpoint){
+      if(submitBtn){submitBtn.disabled=true}
+      setStatus(document.documentElement.lang==='ar'?'جارٍ الإرسال...':'Sending...', 'pending');
       fetch(endpoint,{
         method:'POST',
-        headers:{'Content-Type':'application/json'},
+        headers:{'Content-Type':'text/plain'},
         body:JSON.stringify(payload)
       })
-      .then(r=>{ if(!r.ok) throw new Error('x'); return r.text().catch(()=> '') })
-      .then(()=>{ inc(); clear(); })
-      .catch(()=>{ inc(); clear(); });
+      .then(r=>{ if(!r.ok) throw new Error('request_failed'); return r.text().catch(()=> '') })
+      .then(msg=>{ setStatus(msg||(document.documentElement.lang==='ar'?'تم التسجيل بنجاح':'Registered successfully'),'success'); inc(); clear(); })
+      .catch(()=>{ setStatus(document.documentElement.lang==='ar'?'حدث خطأ، حاول لاحقاً':'An error occurred, please try later','error'); })
+      .finally(()=>{ if(submitBtn){submitBtn.disabled=false} });
     }else{
       inc();
       clear();
     }
   });
+  function refreshRegCount(){
+    const endpoint=(preorderForm.dataset.endpoint||'').trim();
+    if(!endpoint||!regEl)return;
+    const url=endpoint+(endpoint.includes('?')?'&':'?')+'mode=count';
+    fetch(url).then(r=>r.json()).then(d=>{const c=d&&typeof d.count==='number'?d.count:NaN;if(!isNaN(c)){setRegCount(c);regEl.dataset.target=String(c);animateCounter(regEl,c,800)}}).catch(()=>{});
+  }
+  refreshRegCount();
 }
 const i18n={
   ar:{

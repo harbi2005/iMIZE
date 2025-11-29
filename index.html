@@ -207,22 +207,23 @@
         <span class="registered-label" data-i18n="preorder.registeredLabel">عدد المسجلين</span>
         <span class="count-chip"><span class="counter registered-count" data-target="0">0</span></span>
       </div>
-      <form class="preorder-form" action="#" method="post">
+      <form class="preorder-form" id="registerForm" action="#" method="post" data-endpoint="https://script.google.com/macros/s/AKfycbxamtbmCEa_OFTWFg_CTreUUy4yKaJCs2GsxK8mj4HrQlo0W8PvfzYrPvZhzrl1JUgq/exec">
         <div class="form-field">
-          <input type="text" name="name" placeholder="الاسم الكامل" data-i18n-ph="preorder.name" required>
+          <input type="text" id="name" name="name" placeholder="الاسم الكامل" data-i18n-ph="preorder.name" required>
           <small class="field-hint"></small>
         </div>
         <div class="form-field">
-          <input type="email" name="email" placeholder="البريد الإلكتروني" data-i18n-ph="preorder.email" required>
+          <input type="email" id="email" name="email" placeholder="البريد الإلكتروني" data-i18n-ph="preorder.email" required>
           <small class="field-hint"></small>
         </div>
         <div class="form-field">
-          <input type="tel" name="phone" placeholder="رقم الجوال" data-i18n-ph="preorder.phone" inputmode="tel" required>
+          <input type="tel" id="phone" name="phone" placeholder="رقم الجوال" data-i18n-ph="preorder.phone" inputmode="tel" required>
           <small class="field-hint"></small>
         </div>
         <div class="form-actions">
           <button type="submit" class="btn btn-primary" data-i18n="preorder.submit">تأكيد الحجز</button>
         </div>
+        <div class="form-status" role="status" aria-live="polite"></div>
       </form>
     </div>
   </section>
