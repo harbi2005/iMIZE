@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iMIZE - نظام الترطيب الذكي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header" id="top">
+  <nav class="navbar">
+    <a class="brand" href="#hero"><img src="images/logo.png" alt="iMIZE" class="brand-img"></a>
+    <button class="nav-toggle" aria-label="القائمة"></button>
+    <ul class="nav-links">
+      <li><a href="#about" data-i18n="nav.about">عن iMIZE</a></li>
+      <li><a href="#features" data-i18n="nav.features">المزايا</a></li>
+      <li><a href="#solution" data-i18n="nav.solution">الحل</a></li>
+      <li><a href="#preorder" class="cta-link" data-i18n="nav.preorder">الحجز المسبق</a></li>
+      <li><a href="#contact" data-i18n="nav.contact">تواصل</a></li>
+      <li class="lang-switch">
+        <button class="lang-btn active" data-lang="ar">AR</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <h1 class="hero-title" data-i18n="hero.title">iMIZE - الذكاء الذي يرطب حياتك</h1>
+        <p class="hero-subtitle" data-i18n="hero.subtitle">هو نظام ترطيب ذكي متكامل، يجمع بين زمزمية عالية الجودة وتطبيق ذكي، لتحويل عملية شرب الماء من عادة عشوائية إلى ممارسة صحية دقيقة</p>
+        <div class="hero-actions">
+          <a href="#preorder" class="btn btn-primary" data-i18n="hero.ctaPrimary">الحجز المسبق</a>
+          <a href="#features" class="btn btn-secondary" data-i18n="hero.ctaSecondary">اكتشف المزايا</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="bottle-glow"></div>
+        <img src="images/Maskgroup.png" alt="الزمزمية الذكية iMIZE" class="hero-bottle" loading="eager">
+      </div>
+    </div>
+  </section>
+  <section class="problem" id="problem">
+    <div class="container">
+      <h2 class="section-title problem-title" data-i18n="problem.title">المشكلة: الجفاف الخفي الذي يهدد صحتنا وبيئتنا</h2>
+      <p class="problem-desc" data-i18n="problem.desc">معظم الناس لا يدركون أنهم يعانون من الجفاف المزمن، مما يؤثر سلباً على صحتهم وإنتاجيتهم وبيئتهم</p>
+    </div>
+    <div class="container">
+      <div class="problem-grid">
+        <div class="problem-card health">
+          <h3 class="card-title" data-i18n="problem.healthTitle">المشكلة الصحية</h3>
+          <div class="stats">
+            <div class="stat" data-aos="fade-up">
+              <div class="stat-icon"><img src="images/healthcare.png" alt="الصحة"></div>
+              <div class="stat-content">
+                <div class="stat-number counter" data-target="75" data-suffix="٪">0</div>
+                <div class="stat-text" data-i18n="problem.health.statChronic">٧٥٪ من السعوديين يعانون من الجفاف المزمن</div>
+              </div>
+            </div>
+            <div class="stat" data-aos="fade-up">
+              <div class="stat-icon"><img src="images/kidneys.png" alt="الكلى"></div>
+              <div class="stat-content">
+                <div class="stat-number counter" data-target="40" data-suffix="٪">0</div>
+                <div class="stat-text" data-i18n="problem.health.statKidney">٤٠٪ زيادة في مشاكل الكلى المرتبطة بالجفاف</div>
+              </div>
+            </div>
+            <div class="stat" data-aos="fade-up">
+              <div class="stat-icon"><img src="images/optimization.png" alt="الإنتاجية"></div>
+              <div class="stat-content">
+                <div class="stat-number counter" data-target="25" data-suffix="٪">0</div>
+                <div class="stat-text" data-i18n="problem.health.statProductivity">٢٥٪ انخفاض في الإنتاجية بسبب الجفاف</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="problem-card environment">
+          <h3 class="card-title" data-i18n="problem.envTitle">المشكلة البيئية</h3>
+          <div class="stats">
+            <div class="stat" data-aos="fade-up">
+              <div class="stat-icon"><img src="images/safe.png" alt="المياه"></div>
+              <div class="stat-content">
+                <div class="stat-number counter" data-target="30" data-suffix="٪">0</div>
+                <div class="stat-text" data-i18n="problem.env.statWaste">٣٠٪ هدر في استهلاك المياه المنزلية</div>
+              </div>
+            </div>
+            <div class="stat" data-aos="fade-up">
+              <div class="stat-icon"><img src="images/water.png" alt="النفايات البلاستيكية"></div>
+              <div class="stat-content">
+                <div class="stat-number counter" data-target="67" data-suffix="٪">0</div>
+                <div class="stat-text" data-i18n="problem.env.statPlastic">٦٧٪ من النفايات البلاستيكية في المملكة تأتي من العبوات ذات الاستخدام الواحد</div>
+              </div>
+            </div>
+            <div class="stat" data-aos="fade-up">
+              <div class="stat-icon"><img src="images/carbon-dioxide.png" alt="البصمة الكربونية"></div>
+              <div class="stat-content">
+                <div class="stat-number counter" data-target="25" data-suffix="٪">0</div>
+                <div class="stat-text" data-i18n="problem.env.statCarbon">٢٥٪ من انبعاثات الكربون في قطاع المياه تأتي من التعبئة والنقل</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="solution" id="solution">
+    <div class="container">
+      <h2 class="section-title solution-title" data-i18n="solution.title">الحل المتكامل: iMIZE نظام الترطيب الذكي</h2>
+      <p class="solution-desc" data-i18n="solution.desc">دمجنا الذكاء الاصطناعي مع التصميم الحديث لإنشاء نظام ترطيب شخصي يحافظ على صحتك وبيئتك</p>
+    </div>
+    <div class="container">
+      <div class="solution-grid">
+        <div class="solution-col hardware" data-aos="fade-up">
+          <h3 class="solution-subtitle" data-i18n="solution.hwTitle">الزمزمية الذكية</h3>
+          <div class="gallery hardware-gallery">
+            <div class="gallery-main-wrap">
+              <img src="images/imaze2.png" alt="الزمزمية الذكية - زاوية أمامية" class="gallery-main img-hover" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="solution-col software" data-aos="fade-up">
+          <h3 class="solution-subtitle" data-i18n="solution.swTitle">التطبيق الذكي</h3>
+          <div class="gallery app-gallery">
+            <div class="screens-row">
+              <figure class="screen">
+                <img src="images/CoverPage.png" alt="واجهة التطبيق - صفحة الغلاف" class="img-hover" loading="lazy">
+              </figure>
+              <figure class="screen">
+                <img src="images/After Add Water page.png" alt="واجهة التطبيق - بعد إضافة الماء" class="img-hover" loading="lazy">
+              </figure>
+              <figure class="screen">
+                <img src="images/AnalysisPage.png" alt="واجهة التطبيق - صفحة التحليل" class="img-hover" loading="lazy">
+              </figure>
+              <figure class="screen">
+                <img src="images/Subscriptionpage.png" alt="واجهة التطبيق - صفحة الاشتراك" class="img-hover" loading="lazy">
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="comparison" data-aos="fade-up">
+        <div class="comparison-card traditional">
+          <h3 class="comparison-title" data-i18n="compare.traditional">الحل التقليدي</h3>
+          <ul class="comparison-list">
+            <li><span class="mark bad"></span><span data-i18n="compare.traditional1">عدم تتبع دقيق للاستهلاك</span></li>
+            <li><span class="mark bad"></span><span data-i18n="compare.traditional2">تنبيهات يدوية وغير فعّالة</span></li>
+            <li><span class="mark bad"></span><span data-i18n="compare.traditional3">غياب التحليلات الشخصية</span></li>
+          </ul>
+        </div>
+        <div class="comparison-card imize">
+          <h3 class="comparison-title" data-i18n="compare.imize">حل iMIZE</h3>
+          <ul class="comparison-list">
+            <li><span class="mark good"></span><span data-i18n="compare.imize1">تتبع لحظي دقيق</span></li>
+            <li><span class="mark good"></span><span data-i18n="compare.imize2">تنبيهات ذكية مخصصة</span></li>
+            <li><span class="mark good"></span><span data-i18n="compare.imize3">تقارير وإحصائيات شخصية</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-card">
+        <div class="about-brand" data-i18n="about.brand">iMIZE</div>
+        <p data-i18n="about.desc">منظومة متكاملة لمتابعة مستوى الترطيب اليومي باستخدام مستشعرات دقيقة وخوارزميات ذكية، مع تطبيق مخصص يقدم توصيات وشعارات تحفيزية مدعومة بالبيانات.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <h2 class="section-title" data-i18n="features.title">المزايا الرئيسية</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"></div>
+          <h3 data-i18n="features.card1.title">مستشعرات قياس دقيقة</h3>
+          <p data-i18n="features.card1.desc">قراءة فورية لكمية الماء المستهلكة وتنبيهات ذكية قائمة على نمطك اليومي.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"></div>
+          <h3 data-i18n="features.card2.title">استدامة ومواد آمنة</h3>
+          <p data-i18n="features.card2.desc">مواد عالية الجودة قابلة لإعادة الاستخدام بتصميم يحافظ على البيئة.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"></div>
+          <h3 data-i18n="features.card3.title">تطبيق مرافق</h3>
+          <p data-i18n="features.card3.desc">لوحة تحكم لمتابعة أهدافك اليومية مع إحصائيات وتوصيات شخصية.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <section class="preorder" id="preorder">
+    <div class="container preorder-card">
+      <h2 class="section-title" data-i18n="preorder.title">الحجز المسبق</h2>
+      <p data-i18n="preorder.desc">سجل اهتمامك للحصول على iMIZE عند الإطلاق الأول وبسعر حصري.</p>
+      <div class="registered">
+        <span class="registered-label" data-i18n="preorder.registeredLabel">عدد المسجلين</span>
+        <span class="count-chip"><span class="counter registered-count" data-target="0">0</span></span>
+      </div>
+      <form class="preorder-form" action="#" method="post">
+        <div class="form-field">
+          <input type="text" name="name" placeholder="الاسم الكامل" data-i18n-ph="preorder.name" required>
+          <small class="field-hint"></small>
+        </div>
+        <div class="form-field">
+          <input type="email" name="email" placeholder="البريد الإلكتروني" data-i18n-ph="preorder.email" required>
+          <small class="field-hint"></small>
+        </div>
+        <div class="form-field">
+          <input type="tel" name="phone" placeholder="رقم الجوال" data-i18n-ph="preorder.phone" inputmode="tel" required>
+          <small class="field-hint"></small>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" data-i18n="preorder.submit">تأكيد الحجز</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="container contact-wrap">
+      <div class="contact-info">
+        <h2 class="section-title" data-i18n="contact.title">تواصل معنا</h2>
+        <p data-i18n="contact.desc">للاستفسارات أو الشراكات، يسعدنا تواصلك. سنعود إليك سريعًا.</p>
+        <ul class="contact-list">
+          <li><span data-i18n="contact.emailLabel">البريد:</span> hello@imize.ai</li>
+          <li><span data-i18n="contact.phoneLabel">الهاتف:</span> +966 000 000 000</li>
+        </ul>
+      </div>
+      <div class="contact-brand">
+        <div class="brand-mark">iMIZE</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>© iMIZE</p>
+  </div>
+</footer>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>
