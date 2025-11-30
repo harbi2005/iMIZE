@@ -7,6 +7,8 @@ function toId(id){return document.querySelector(id)}
 function scrollToTarget(target){const y=target.getBoundingClientRect().top+window.pageYOffset-getNavH()+2;window.scrollTo({top:y,behavior:'smooth'})}
 links.forEach(a=>{a.addEventListener('click',e=>{const href=a.getAttribute('href');if(href.startsWith('#')){e.preventDefault();const el=toId(href);if(el)scrollToTarget(el);body.classList.remove('nav-open')}})});
 toggle.addEventListener('click',()=>{body.classList.toggle('nav-open')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){body.classList.remove('nav-open')}});
+document.addEventListener('click',e=>{if(body.classList.contains('nav-open')){if(!nav.contains(e.target)){body.classList.remove('nav-open')}}},true);
 function onScroll(){if(window.scrollY>8){nav.classList.add('nav-scrolled')}else{nav.classList.remove('nav-scrolled')}}
 document.addEventListener('scroll',onScroll,{passive:true});
 onScroll();
@@ -27,7 +29,11 @@ counters.forEach(el=>counterObserver.observe(el));
 function getRegCount(){return parseInt(localStorage.getItem('registrationsCount')||'0',10)}
 function setRegCount(n){localStorage.setItem('registrationsCount',String(n))}
 const regEl=document.querySelector('.registered-count');
-function initRegCount(){if(regEl){const n=getRegCount();regEl.dataset.target=String(n);animateCounter(regEl,n,800)}}
+function pulseCount(){try{if(regEl&&regEl.parentElement){const chip=regEl.parentElement;chip.classList.add('bump');setTimeout(()=>{chip.classList.remove('bump')},480)}}catch(_){}}
+function initRegCount(){
+  if(regEl){
+  }
+}
 initRegCount();
 function resetRegCount(){setRegCount(0);if(regEl){regEl.dataset.target='0';animateCounter(regEl,0,800)}}
 try{const qp=new URLSearchParams(location.search);if(qp.get('resetCount')==='1'){resetRegCount()}}catch(_){}
@@ -59,8 +65,11 @@ if(preorderForm){
     }
     e.preventDefault();
     const endpoint=(preorderForm.dataset.endpoint||'').trim();
+    const _name=nameInput.value.trim();
     const payload={
-      name:nameInput.value.trim(),
+      name:_name,
+      fullName:_name,
+      Name:_name,
       email:emailInput.value.trim(),
       phone:normalizePhone(phoneInput.value),
       lang:document.documentElement.lang||'ar',
@@ -68,8 +77,14 @@ if(preorderForm){
     };
     function inc(){
       const curr=getRegCount();
-      setRegCount(curr+1);
-      if(regEl){animateCounter(regEl,curr+1,800)}
+      const next=curr+1;
+      setRegCount(next);
+      if(regEl){
+        const lang=document.documentElement.lang||'ar';
+        regEl.dataset.target=String(next);
+        regEl.textContent=lang==='ar'?toArabicDigits(next):String(next);
+        pulseCount();
+      }
     }
     function clear(){
       nameInput.value='';
@@ -85,7 +100,7 @@ if(preorderForm){
         body:JSON.stringify(payload)
       })
       .then(r=>{ if(!r.ok) throw new Error('request_failed'); return r.text().catch(()=> '') })
-      .then(msg=>{ setStatus(msg||(document.documentElement.lang==='ar'?'تم التسجيل بنجاح':'Registered successfully'),'success'); inc(); clear(); })
+      .then(msg=>{ setStatus(msg||(document.documentElement.lang==='ar'?'تم التسجيل بنجاح':'Registered successfully'),'success'); inc(); (function(){try{const p=refreshRegCount(); if(p&&typeof p.then==='function'){p.then(total=>{if(!isNaN(total)){const lang=document.documentElement.lang||'ar';const display=lang==='ar'?toArabicDigits(total):String(total); setStatus((document.documentElement.lang==='ar'?'تم التسجيل بنجاح — الإجمالي الآن: ':'Registered successfully — total now: ')+display,'success')}})}else{refreshRegCount()}}catch(_){refreshRegCount()}})(); clear(); })
       .catch(()=>{ setStatus(document.documentElement.lang==='ar'?'حدث خطأ، حاول لاحقاً':'An error occurred, please try later','error'); })
       .finally(()=>{ if(submitBtn){submitBtn.disabled=false} });
     }else{
@@ -93,13 +108,91 @@ if(preorderForm){
       clear();
     }
   });
+  let isRefreshing=false;
+  function fetchWithTimeout(url,ms=4000){
+    try{
+      const ctrl=new AbortController();
+      const t=setTimeout(()=>{try{ctrl.abort()}catch(_){ }},ms);
+      return fetch(url,{cache:'no-store',signal:ctrl.signal}).finally(()=>{try{clearTimeout(t)}catch(_){ }});
+    }catch(_){
+      return fetch(url,{cache:'no-store'});
+    }
+  }
+  function setCountDisplay(n){
+    const val=Number(n);
+    if(isNaN(val)||!regEl)return;
+    setRegCount(val);
+    const lang=document.documentElement.lang||'ar';
+    const first=!regEl.dataset.animatedOnce;
+    if(first){
+      const from=0;
+      const startTime=performance.now();
+      const dur=Math.max(600,Math.min(1600,Math.abs(val-from)*80));
+      function step(now){
+        const p=Math.min((now-startTime)/dur,1);
+        const v=Math.round(from+(val-from)*p);
+        regEl.textContent=lang==='ar'?toArabicDigits(v):String(v);
+        if(p<1){requestAnimationFrame(step)}else{regEl.dataset.target=String(val);regEl.dataset.ran='1';regEl.dataset.animatedOnce='1';pulseCount()}
+      }
+      requestAnimationFrame(step);
+    }else{
+      regEl.dataset.target=String(val);
+      regEl.textContent=lang==='ar'?toArabicDigits(val):String(val);
+      regEl.dataset.ran='1';
+      pulseCount();
+    }
+  }
+  function loadRegCountJsonp(){
+    const endpoint=(preorderForm.dataset.endpoint||'').trim();
+    if(!endpoint)return;
+    const cbName='__regCountCallback';
+    try{ delete window[cbName] }catch(_){}
+    window[cbName]=function(payload){
+      try{
+        let v=payload;
+        if(payload&&typeof payload==='object'){
+          if(payload.total!==undefined)v=payload.total; else if(payload.count!==undefined)v=payload.count;
+        }
+        setCountDisplay(v);
+      }catch(_){ }
+    };
+    const s=document.createElement('script');
+    s.src=endpoint+(endpoint.includes('?')?'&':'?')+'mode=count&callback='+cbName;
+    s.async=true;
+    s.onerror=function(){ try{ delete window[cbName] }catch(_){} };
+    document.head.appendChild(s);
+    setTimeout(()=>{ try{ delete window[cbName] }catch(_){} },4000);
+  }
   function refreshRegCount(){
     const endpoint=(preorderForm.dataset.endpoint||'').trim();
     if(!endpoint||!regEl)return;
+    if(isRefreshing)return;
+    isRefreshing=true;
     const url=endpoint+(endpoint.includes('?')?'&':'?')+'mode=count';
-    fetch(url).then(r=>r.json()).then(d=>{const c=d&&typeof d.count==='number'?d.count:NaN;if(!isNaN(c)){setRegCount(c);regEl.dataset.target=String(c);animateCounter(regEl,c,800)}}).catch(()=>{});
+    return fetchWithTimeout(url,4000)
+      .then(async r=>{
+        try{
+          const d=await r.json();
+          let v=NaN;
+          if(d&&d.total!==undefined){v=typeof d.total==='number'?d.total:parseInt(String(d.total),10)}
+          else if(d&&d.count!==undefined){v=typeof d.count==='number'?d.count:parseInt(String(d.count),10)}
+          return isNaN(v)?NaN:v;
+        }catch(_){
+          const t=await r.text().catch(()=> '');
+          const m=t.match(/[0-9٠-٩]+/);
+          if(!m)return NaN;
+          const latin=toLatinDigits(m[0]);
+          return parseInt(latin,10);
+        }
+      })
+      .then(c=>{ if(!isNaN(c)){ setCountDisplay(c) } else { loadRegCountJsonp() } })
+      .catch(()=>{ loadRegCountJsonp() })
+      .finally(()=>{isRefreshing=false});
   }
   refreshRegCount();
+  try{
+    document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ try{ refreshRegCount() }catch(_){ } } });
+  }catch(_){ }
 }
 const i18n={
   ar:{
@@ -210,7 +303,8 @@ const i18n={
   }
 };
 function toLatinDigits(str){return String(str).replace(/[٠-٩]/g,d=>'0123456789'['٠١٢٣٤٥٦٧٨٩'.indexOf(d)])}
-function applyLanguage(lang){document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');const t=i18n[lang][k];if(typeof t==='string')el.textContent=t});document.querySelectorAll('[data-i18n-ph]').forEach(el=>{const k=el.getAttribute('data-i18n-ph');const t=i18n[lang][k];if(typeof t==='string')el.setAttribute('placeholder',t)});const suffix=lang==='ar'?'٪':'%';document.querySelectorAll('.counter').forEach(el=>{el.dataset.suffix=suffix;const m=el.textContent.match(/[٠-٩0-9]+/);if(m){const num=m[0];const conv=lang==='ar'?toArabicDigits(num):toLatinDigits(num);el.textContent=el.textContent.replace(/[٠-٩0-9]+/,conv).replace(/[٪%]/,suffix)}});document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang))}
+function applyLanguage(lang){document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');const t=i18n[lang][k];if(typeof t==='string')el.textContent=t});document.querySelectorAll('[data-i18n-ph]').forEach(el=>{const k=el.getAttribute('data-i18n-ph');const t=i18n[lang][k];if(typeof t==='string')el.setAttribute('placeholder',t)});const suffix=lang==='ar'?'٪':'%';document.querySelectorAll('.counter').forEach(el=>{const hasSuffix=el.hasAttribute('data-suffix');if(hasSuffix){el.dataset.suffix=suffix}else{el.removeAttribute('data-suffix');delete el.dataset.suffix}const m=el.textContent.match(/[٠-٩0-9]+/);if(m){const num=m[0];const conv=lang==='ar'?toArabicDigits(num):toLatinDigits(num);el.textContent=el.textContent.replace(/[٠-٩0-9]+/,conv)}if(hasSuffix){el.textContent=el.textContent.replace(/[٪%]/,suffix)}else{el.textContent=el.textContent.replace(/[٪%]/,'')}});document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang))}
 document.querySelectorAll('.lang-btn').forEach(btn=>{btn.addEventListener('click',()=>{applyLanguage(btn.dataset.lang)})});
 applyLanguage(document.documentElement.lang||'ar');
+try{if(typeof refreshRegCount==='function'){refreshRegCount()}}catch(_){}
  
