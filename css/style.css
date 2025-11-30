@@ -90,7 +90,8 @@ html[dir="ltr"] .hero-content{transform:translateX(24px);text-align:right;justif
 .section-title{font-size:28px;margin:0 0 24px;color:#fff}
 .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .feature-card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:22px;box-shadow:var(--shadow-sm)}
-.feature-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(90deg,var(--color-teal),var(--color-teal-dark));margin-bottom:12px}
+.feature-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(90deg,var(--color-teal),var(--color-teal-dark));margin-bottom:12px;display:flex;align-items:center;justify-content:center}
+.feature-icon svg{width:26px;height:26px;fill:#fff}
 .app{padding:80px 0;background:linear-gradient(180deg,rgba(32,31,51,1) 0%,rgba(40,43,79,1) 100%)}
 .app-wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
 .app-info{display:flex;flex-direction:column;gap:14px}
@@ -116,13 +117,19 @@ html[dir="ltr"] .hero-content{transform:translateX(24px);text-align:right;justif
 .count-chip{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08)}
 .count-chip.bump{animation:bumpScale .48s ease}
 @keyframes bumpScale{0%{transform:scale(1)}20%{transform:scale(1.08)}100%{transform:scale(1)}}
-.registered .counter{font-weight:800;color:var(--color-teal-dark)}
+.registered .counter{font-weight:800;color:#fff}
 .contact{padding:80px 0;background:linear-gradient(180deg,rgba(32,31,51,1) 0%,rgba(40,43,79,1) 100%)}
 .contact-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:center}
+
 .contact-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;color:#eaf7f7}
+.contact-list li{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.12)}
+.contact-icon{width:32px;height:32px;border-radius:10px;background:linear-gradient(90deg,var(--color-teal),var(--color-teal-dark));display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm)}
+.contact-icon svg{width:18px;height:18px;fill:#fff}
+.contact-list a{color:#fff;font-weight:600}
 .phone-link{direction:ltr}
 .email-link{direction:ltr}
 .brand-mark{font-weight:800;font-size:40px;color:var(--color-teal)}
+.brand-mark-img{height:60px;width:auto;display:block}
 .site-footer{padding:30px 0;background:var(--color-navy);text-align:center;padding-bottom:calc(30px + env(safe-area-inset-bottom))}
 .site-footer p{margin:0;color:#cfeeee}
 @media (max-width:980px){.hero-inner{grid-template-columns:1fr}.app-wrap{grid-template-columns:1fr}.features-grid{grid-template-columns:1fr 1fr}}
@@ -146,6 +153,7 @@ html[dir="ltr"] .hero-content{transform:translateX(24px);text-align:right;justif
   .form-field input{height:52px; font-size:16px}
   .count-chip{padding:6px 12px}
   .registered .counter{font-size:20px}
+  .brand-mark-img{height:50px}
 }
 
 @keyframes menuIn{0%{opacity:0;transform:translateY(-8px)}100%{opacity:1;transform:none}}
